@@ -1,18 +1,25 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
 import BattlePage from './pages/BattlePage';
 import CharacterPage from './pages/CharacterPage';
 import LandingPage from './pages/LandingPage';
 import LeaderboardPage from './pages/LeaderBoard';
+import NotFoundPage from './pages/NotFoundPage';
+
+const AppRoutes = () => {
+  const routes = useRoutes([
+    { path: '/', element: <LandingPage /> },
+    { path: '/battle', element: <BattlePage /> },
+    { path: '/character/:id', element: <CharacterPage /> },
+    { path: '/leaderboard', element: <LeaderboardPage /> },
+    { path: '*', element: <NotFoundPage /> },
+  ]);
+  return routes;
+};
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/battle" element={<BattlePage />} />
-        <Route path="/character/:id" element={<CharacterPage />} />
-        <Route path="/leaderboard" element={<LeaderboardPage />} />
-      </Routes>
+      <AppRoutes />
     </Router>
   );
 }
