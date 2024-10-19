@@ -1,4 +1,6 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import config from '@/config';
+import { useWinStreakStore } from '@/store/usewinStreakStore';
 import { Character } from '@/types/Character';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,8 +9,13 @@ function BattlePage() {
   const [characterOne, setCharacterOne] = useState<Character | null>(null);
   const [characterTwo, setCharacterTwo] = useState<Character | null>(null);
   const [loading, setLoading] = useState(true);
-  const [winStreak, setWinStreak] = useState(0);
   const navigate = useNavigate();
+
+  const winStreak = useWinStreakStore((state) => state.winStreak);
+  const increaseWinStreak = useWinStreakStore(
+    (state) => state.increaseWinStreak
+  );
+  const resetWinStreak = useWinStreakStore((state) => state.resetWinStreak);
 
   useEffect(() => {
     fetchCharacters();
@@ -40,9 +47,10 @@ function BattlePage() {
       const data = await response.json();
 
       if (data.newStreak) {
-        setWinStreak(data.newStreak);
+        increaseWinStreak();
         fetchCharacters();
       } else if (data.characterId) {
+        resetWinStreak();
         navigate(`/character/${data.characterId}`);
       }
     } catch (error) {
@@ -62,28 +70,36 @@ function BattlePage() {
     <div className="container mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold text-center mb-4">Who is hotter?</h2>
       <div className="flex justify-around">
-        <div
+        <Card
           onClick={() => handleVote(characterOne.id, characterTwo.id)}
-          className="cursor-pointer"
+          className="cursor-pointer w-64"
         >
-          <img
-            src={characterOne.image_url}
-            alt={characterOne.name}
-            className="w-64 h-64 object-cover rounded"
-          />
-          <p className="text-center mt-2">{characterOne.name}</p>
-        </div>
-        <div
+          <CardHeader>
+            <CardTitle className="text-center">{characterOne.name}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <img
+              src={characterOne.image_url}
+              alt={characterOne.name}
+              className="w-full h-auto rounded"
+            />
+          </CardContent>
+        </Card>
+        <Card
           onClick={() => handleVote(characterTwo.id, characterOne.id)}
-          className="cursor-pointer"
+          className="cursor-pointer w-64"
         >
-          <img
-            src={characterTwo.image_url}
-            alt={characterTwo.name}
-            className="w-64 h-64 object-cover rounded"
-          />
-          <p className="text-center mt-2">{characterTwo.name}</p>
-        </div>
+          <CardHeader>
+            <CardTitle className="text-center">{characterTwo.name}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <img
+              src={characterTwo.image_url}
+              alt={characterTwo.name}
+              className="w-full h-auto rounded"
+            />
+          </CardContent>
+        </Card>
       </div>
       <div className="text-center mt-4">
         <p>Current Win Streak: {winStreak}</p>

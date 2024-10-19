@@ -1,10 +1,11 @@
+import { Character } from '@/types/Character';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import config from '../config';
 
 function CharacterPage() {
   const { id } = useParams<{ id: string }>();
-  const [character, setCharacter] = useState<any>(null);
+  const [character, setCharacter] = useState<Character>();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
