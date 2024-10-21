@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'; // Using shadcn/ui Button
+import { Button } from '@/components/ui/Button'; // Using shadcn/ui Button
 import { Link } from 'react-router-dom';
 
 function LandingPage() {

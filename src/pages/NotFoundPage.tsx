@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'; // Import the Button component from shadcn/ui
+import { Button } from '@/components/ui/Button'; // Import the Button component from shadcn/ui
 import React from 'react';
 import { Link } from 'react-router-dom';
 
