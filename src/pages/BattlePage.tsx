@@ -22,40 +22,41 @@ function BattlePage() {
   }, []);
 
   const fetchCharacters = async () => {
-    try {
-      const response = await fetch(`${config.apiBaseUrl}/battle`);
-      const data = await response.json();
-      setCharacterOne(data.characterOne);
-      setCharacterTwo(data.characterTwo);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching characters:', error);
-    }
+    fetch(`${config.apiBaseUrl}/battle`)
+      .then((response) => response.json())
+      .then((data) => {
+        setCharacterOne(data.characterOne);
+        setCharacterTwo(data.characterTwo);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching characters:', error);
+      });
   };
 
   const handleVote = async (winnerId: string, loserId: string) => {
-    try {
-      const response = await fetch(`${config.apiBaseUrl}/battle/vote`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          winnerId,
-          loserId,
-          currentStreak: winStreak,
-        }),
+    fetch(`${config.apiBaseUrl}/battle/vote`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        winnerId,
+        loserId,
+        currentStreak: winStreak,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.newStreak) {
+          increaseWinStreak();
+          fetchCharacters();
+        } else if (data.characterId) {
+          resetWinStreak();
+          navigate(`/character/${data.characterId}`);
+        }
+      })
+      .catch((error) => {
+        console.error('Error submitting vote:', error);
       });
-      const data = await response.json();
-
-      if (data.newStreak) {
-        increaseWinStreak();
-        fetchCharacters();
-      } else if (data.characterId) {
-        resetWinStreak();
-        navigate(`/character/${data.characterId}`);
-      }
-    } catch (error) {
-      console.error('Error submitting vote:', error);
-    }
   };
 
   if (loading) {
