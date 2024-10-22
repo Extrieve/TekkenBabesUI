@@ -10,15 +10,16 @@ function CharacterPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCharacter = async () => {
-      try {
-        const response = await fetch(`${config.apiBaseUrl}/characters/${id}`);
-        const data = await response.json();
-        setCharacter(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching character:', error);
-      }
+    const fetchCharacter = () => {
+      fetch(`${config.apiBaseUrl}/characters/${id}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setCharacter(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching character:', error);
+        });
     };
 
     fetchCharacter();
