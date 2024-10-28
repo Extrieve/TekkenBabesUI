@@ -1,8 +1,9 @@
 import config from '@/config';
+import Leaderboard from '@/types/Leaderboard';
 import { useEffect, useState } from 'react';
 
 function LeaderboardPage() {
-  const [leaderboard, setLeaderboard] = useState<any[]>([]);
+  const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
