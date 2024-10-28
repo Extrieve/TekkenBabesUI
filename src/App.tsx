@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
 import BattlePage from './pages/BattlePage';
 import CharacterPage from './pages/CharacterPage';
+import CharactersPage from './pages/CharactersPage';
 import LandingPage from './pages/LandingPage';
 import LeaderboardPage from './pages/LeaderBoard';
 import NotFoundPage from './pages/NotFoundPage';
@@ -10,6 +11,7 @@ const AppRoutes = () => {
     { path: '/', element: <LandingPage /> },
     { path: '/battle', element: <BattlePage /> },
     { path: '/character/:id', element: <CharacterPage /> },
+    { path: '/characters', element: <CharactersPage /> },
     { path: '/leaderboard', element: <LeaderboardPage /> },
     { path: '*', element: <NotFoundPage /> },
   ]);
